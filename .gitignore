@@ -134,6 +134,14 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# FAISS local index
+faiss_index/
+
+# Application Data & Cache
+data/
+hf_cache/
+temp/
+
 # Environments
 .env
 .envrc
