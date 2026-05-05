@@ -11,10 +11,27 @@ A **Retrieval-Augmented Generation (RAG)** medical chatbot powered by **LangChai
 
 ## 📋 How It Works
 
+```mermaid
+flowchart LR
+    subgraph Data Ingestion
+        PDFs["📄 Medical PDFs"] --> Loader["PyPDF Loader"]
+        Loader --> Splitter["Text Splitter"]
+        Splitter --> Embed["HuggingFace\nEmbeddings"]
+        Embed --> FAISS["📌 FAISS\nVector Index"]
+    end
+
+    subgraph User Interaction
+        User["👤 User Question"] --> Retriever["Similarity\nSearch"]
+        FAISS --> Retriever
+        Retriever --> LLM["🤖 Groq (Llama-3)"]
+        LLM --> Answer["💬 Answer"]
+    end
+```
+
 1. **Ingest** — Medical PDFs are loaded, split into chunks, and embedded using `sentence-transformers/all-MiniLM-L6-v2`.
 2. **Index** — Embeddings are stored locally in a **FAISS** index (no cloud required).
 3. **Retrieve** — When a user asks a question, the most relevant chunks are retrieved via similarity search.
-4. **Generate** — The retrieved context + question are sent to **Groq (Mixtral-8x7B)**, which generates a grounded answer.
+4. **Generate** — The retrieved context + question are sent to **Groq (Llama 3.3)**, which generates a grounded answer.
 
 ---
 
